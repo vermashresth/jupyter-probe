@@ -1,7 +1,7 @@
 import pynvml
 
 def get_gpu_processes(pid_mapping):
-    pynvml.init()
+    pynvml.nvmlInit()
     pids = []
     memory_pcts = []
     # memory_usgs = []

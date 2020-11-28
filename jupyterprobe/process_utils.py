@@ -19,7 +19,7 @@ def get_sessions_dataframe(domain, port, **kwargs):
             * pid: pid of the notebook process.
             * memory: notebook memory consumption in percentage.
     """
-    res = get_running_sessions(host, port, **kwargs)
+    res = get_running_sessions(domain, port, **kwargs)
     res = process_sessions_info(res)
     sessions = [{'Kernel_ID': session['kernel']['id'],
                   'Path': session['path'],
