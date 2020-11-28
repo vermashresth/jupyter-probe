@@ -1,4 +1,4 @@
-from jupyterprobe.process_utils import get_sessions_dataframe
+from jupyterprobe.pid_utils import get_sessions_dataframe
 try:
     from jupyterprobe.richUI import get_summary_panel, get_usage_table, console_print
 except:
