@@ -5,7 +5,7 @@ import psutil
 import requests
 
 
-def get_sessions_dataframe(domain, port, **kwargs):
+def get_sessions_dataframe(domain, port, password=None, token=None):
     """Show table with info about running jupyter notebooks.
 
     Args:
@@ -19,7 +19,7 @@ def get_sessions_dataframe(domain, port, **kwargs):
             * pid: pid of the notebook process.
             * memory: notebook memory consumption in percentage.
     """
-    res = get_running_sessions(domain, port, **kwargs)
+    res = get_running_sessions(domain, port, password=password, token=token)
     res = process_sessions_info(res)
     sessions = [{'Kernel_ID': session['kernel']['id'],
                   'Path': session['path'],
@@ -38,13 +38,13 @@ def get_running_sessions(domain, port, password=None, token=None):
         raise Exception('Only one of password and token can be given')
     elif password:
         s.get(base_url)
-        data = {'password':kwargs['password']}
+        data = {'password':password}
         data.update(s.cookies)
         s.post(base_url+"/login", data=data)
         headers = {}
     elif token:
         headers = {
-            'Authorization': 'token {}'.format(kwargs['token'])
+            'Authorization': 'token {}'.format(token)
         }
     else:
         headers = {}

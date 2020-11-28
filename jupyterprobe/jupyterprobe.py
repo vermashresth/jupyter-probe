@@ -8,7 +8,7 @@ class Probe:
     def __init__(self, domain, port, **kwargs):
         self.results = get_sessions_dataframe(domain, port, **kwargs)
 
-    def monitor(self):
+    def monitor(self, top_n=5):
         """
         Return a jupyter widget showing state of the Jupyter Environment .
         Args:
@@ -18,7 +18,7 @@ class Probe:
             Jpyter widget monitor
         """
         summary = get_summary_panel(13.6, 73)
-        usage = get_usage_table(self.results, 5)
+        usage = get_usage_table(self.results, top_n)
         console = console_print([summary, usage])
 
     def get_all_sessions(self):
