@@ -23,13 +23,14 @@ def get_sessions_dataframe(domain, port, password=None, token=None):
     res = process_sessions_info(res)
     sessions = [{'Kernel_ID': session['kernel']['id'],
                   'Path': session['path'],
-                  'Name': session['name']} for session in res]
+                  'Name': session['name'],
+                  'State': session['kernel']['execution_state']} for session in res]
     df = pd.DataFrame(sessions)
     df = df.set_index('Kernel_ID')
     df.index.name = 'Kernel ID'
     df['PID'] = df.apply(lambda row: get_process_id(row.name), axis=1)
     df['CPU Memory'] = df["PID"].apply(memory_usage_psutil)
-    return df.sort_values('CPU Memory', ascending=False)
+    return df
 
 def get_running_sessions(domain, port, password=None, token=None):
     s = requests.Session()

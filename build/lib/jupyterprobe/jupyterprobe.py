@@ -1,4 +1,5 @@
 from jupyterprobe.process_utils import get_sessions_dataframe
+from jupyterprobe.gpu_utils import merge_gpu_info
 
 try:
     from jupyterprobe.richUI import get_summary_panel, get_usage_table, console_print
@@ -9,6 +10,8 @@ except:
 class Probe:
     def __init__(self, domain, port, **kwargs):
         self.results = get_sessions_dataframe(domain, port, **kwargs)
+        self.results = merge_gpu_info(self.results)
+        self.results.sort_values('CPU Memory', ascending=False, inplace=True)
 
     def monitor(self, top_n=5):
         """
