@@ -85,9 +85,12 @@ def get_process_id(name):
     >>> get_process_id('non-existent process')
     []
     """
-    child = subprocess.Popen(['pgrep', '-f', name], stdout=subprocess.PIPE, shell=False)
+    # child = subprocess.Popen(['pgrep', '-f', name], stdout=subprocess.PIPE, shell=False)
+    # response = child.communicate()[0]
+    # all_pids =  [int(pid) for pid in response.split()]
+    child = subprocess.Popen('ps -ax -o pid,command | awk "!/awk/ && /{}/"'.format(name), stdout=subprocess.PIPE, shell=True)
     response = child.communicate()[0]
-    all_pids =  [int(pid) for pid in response.split()]
+    all_pids = [int(i.strip().split(' ')[0]) for i in response.decode('utf-8').split('\n')[:-1]]
     top_pid = get_top_parent(all_pids)
     return top_pid
 

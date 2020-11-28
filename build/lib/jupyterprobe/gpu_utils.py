@@ -1,4 +1,5 @@
 import pynvml
+import pandas as pd
 
 def get_gpu_processes(pid_mapping):
     pynvml.nvmlInit()
@@ -18,7 +19,7 @@ def get_gpu_processes(pid_mapping):
 def global_to_local_pid_mapping(local_pids):
     mapping = {}
     for local_pid in local_pids:
-        path = '/proc/{}/task/{}/sched'.format(pid)
+        path = '/proc/{}/task/{}/sched'.format(local_pid)
         file = open(path, 'r')
         line = file.readline().rstrip()
         global_pid = re.findall(r'[(][\d]+,', line)[0][1:-1]
