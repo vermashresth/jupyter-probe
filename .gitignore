@@ -1,2 +1,3 @@
 *.ipynb
 jupyterprobe/__pycache__
+tests/

@@ -1,8 +1,10 @@
 from jupyterprobe.process_utils import get_sessions_dataframe
+
 try:
     from jupyterprobe.richUI import get_summary_panel, get_usage_table, console_print
 except:
     from jupyterprobe.plainUI import get_summary_panel, get_usage_table, console_print
+
 
 class Probe:
     def __init__(self, domain, port, **kwargs):
@@ -25,10 +27,10 @@ class Probe:
         return self.results
 
     def get_path_by_pid(self, pid):
-        return self.results[self.results['PID']==pid]['path'][0]
+        return self.results[self.results['PID']==pid]['Path'][0]
 
     def get_path_by_name(self, name):
-        output = self.results[self.results['Name']==name]['path']
+        output = self.results[self.results['Name']==name]['Path']
         if len(output)==1:
             return output[0]
         else:
