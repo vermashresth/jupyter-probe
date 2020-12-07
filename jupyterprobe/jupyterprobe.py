@@ -10,8 +10,11 @@ except:
 class Probe:
     def __init__(self, domain, port, **kwargs):
         self.results = get_sessions_dataframe(domain, port, **kwargs)
-        self.results = merge_gpu_info(self.results)
-        self.results.sort_values('CPU Memory (%)', ascending=False, inplace=True)
+        if self.results is not None:
+            self.results = merge_gpu_info(self.results)
+            self.results.sort_values('CPU Memory (%)', ascending=False, inplace=True)
+        else:
+            raise Exception('Failed to get Jupyter sessions')
 
     def monitor(self, top_n=5):
         """

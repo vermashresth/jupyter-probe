@@ -6,7 +6,7 @@ def get_gpu_processes(pid_mapping={}):
         import pynvml
         pynvml.nvmlInit()
     except Exception as e:
-        print('WARN: GPU not supported on your system')
+        print('WARN: GPU not found on your system')
         return None
         # return pd.DataFrame({'PID': [], 'GPU Memory': [], 'GPU ID': []})
     pids = []

@@ -20,6 +20,10 @@ def get_sessions_dataframe(domain, port, password=None, token=None):
             * memory: notebook memory consumption in percentage.
     """
     res = get_running_sessions(domain, port, password=password, token=token)
+    if 'message' in res:
+        if res['message'] == 'Forbidden':
+            print('ERROR: Token or password wrong. Please recheck')
+            return None
     res = process_sessions_info(res)
     sessions = [{'Kernel_ID': session['kernel']['id'],
                   'Path': session['path'],
