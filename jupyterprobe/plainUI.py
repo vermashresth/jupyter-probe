@@ -1,17 +1,20 @@
 
-def get_summary_panel(cpu_mem_pct, gpu_mem_pct, bar_size=30, expand=True, v_pad=1, h_pad=2):
-    cm = int(cpu_mem_pct*bar_size/100.)
-    cs = bar_size-cm
-    gm = int(gpu_mem_pct*bar_size/100.)
-    gs = bar_size-gm
+def get_summary_panel(info_dict, bar_size=30, expand=True, v_pad=1, h_pad=2):
+    all_text = ''
+    for device in info_dict:
+        mem_pct = info_dict[device]['percent']
+        m = int(mem_pct*bar_size/100.)
+        s = bar_size-m
 
-    gpu_t = 'GPU Memory: {}'.format('#'*gm,)
-    gpu_t +='{} {}%\n'.format(' '*gs, gpu_mem_pct)
-    cpu_t = 'CPU Memory: {}'.format('#'*cm)
-    cpu_t +='{} {}%'.format(' '*cs, cpu_mem_pct)
+        used_mem = info_dict[device]['used']
+        total_mem = info_dict[device]['total']
 
-    text = gpu_t+cpu_t
-    return text
+        t = '{} Memory: {}'.format(device, '#'*m,)
+        t +='{} {}%     Used: {}G   Total: {}G\n'.format(' '*s, mem_pct, used_mem, total_mem)
+
+        all_text +=t
+
+    return all_text
 
 
 def get_usage_table(df, top_n, expand=True):

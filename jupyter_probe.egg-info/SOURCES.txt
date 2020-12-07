@@ -7,6 +7,7 @@ jupyter_probe.egg-info/top_level.txt
 jupyterprobe/__init__.py
 jupyterprobe/gpu_utils.py
 jupyterprobe/jupyterprobe.py
+jupyterprobe/memory_utils.py
 jupyterprobe/plainUI.py
 jupyterprobe/process_utils.py
 jupyterprobe/richUI.py

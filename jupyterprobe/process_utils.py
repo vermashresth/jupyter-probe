@@ -4,6 +4,8 @@ import pandas as pd
 import psutil
 import requests
 
+from jupyterprobe.memory_utils import memory_usage_psutil
+
 
 def get_sessions_dataframe(domain, port, password=None, token=None):
     """Show table with info about running jupyter notebooks.
@@ -98,20 +100,3 @@ def get_process_id(name):
     all_pids = [int(i.strip().split(' ')[0]) for i in response.decode('utf-8').split('\n')[:-1]]
     top_pid = get_top_parent(all_pids)
     return top_pid
-
-
-def memory_usage_psutil(pid=None):
-    """Get memory usage percentage by current process or by process specified by id, like in top.
-
-    Source: https://stackoverflow.com/a/30014612/304209.
-
-    Args:
-        pid: pid of the process to analyze. If None, analyze the current process.
-
-    Returns:
-        memory usage of the process, in percentage like in top, values in [0, 100].
-    """
-    if pid is None:
-        pid = os.getpid()
-    process = psutil.Process(pid)
-    return process.memory_percent()

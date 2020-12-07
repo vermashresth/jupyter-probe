@@ -1,5 +1,6 @@
 from jupyterprobe.process_utils import get_sessions_dataframe
 from jupyterprobe.gpu_utils import merge_gpu_info
+from jupyterprobe.memory_utils import get_memory_info_gpu_cpu
 
 try:
     from jupyterprobe.richUI import get_summary_panel, get_usage_table, console_print
@@ -23,19 +24,20 @@ class Probe:
             host (str): host running jupyter server
             port (str): port running jupytrt server
         Returns:
-            Jpyter widget monitor
+            Jupyter widget monitor
         """
-        summary = get_summary_panel(13.6, 73)
+        memory_info = get_memory_info_gpu_cpu()
+        summary = get_summary_panel(memory_info)
         usage = get_usage_table(self.results, top_n)
         console = console_print([summary, usage])
 
     def get_all_sessions(self):
         return self.results
 
-    def get_path_by_pid(self, pid):
+    def get_path_by_PID(self, pid):
         output = self.results[self.results['PID']==pid]['Path']
         if len(output)==0:
-            print('PID {} not found. Please recheck')
+            print('PID {} not found. Please recheck'.format(pid))
             return None
         else:
             return output.iloc[0]
@@ -43,7 +45,7 @@ class Probe:
     def get_path_by_name(self, name):
         output = self.results[self.results['Name']==name]['Path']
         if len(output)==0:
-            print('Name {} not found. Please recheck')
+            print('Name {} not found. Please recheck'.format(name))
             return None
         elif len(output)==1:
             return output.iloc[0]
