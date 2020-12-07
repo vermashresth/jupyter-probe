@@ -30,12 +30,20 @@ class Probe:
         return self.results
 
     def get_path_by_pid(self, pid):
-        return self.results[self.results['PID']==pid]['Path'][0]
+        output = self.results[self.results['PID']==pid]['Path']
+        if len(output)==0:
+            print('PID {} not found. Please recheck')
+            return None
+        else:
+            return output.iloc[0]
 
     def get_path_by_name(self, name):
         output = self.results[self.results['Name']==name]['Path']
-        if len(output)==1:
-            return output[0]
+        if len(output)==0:
+            print('Name {} not found. Please recheck')
+            return None
+        elif len(output)==1:
+            return output.iloc[0]
         else:
             print('More than one notebooks with name {}'.format(name))
             return output.values

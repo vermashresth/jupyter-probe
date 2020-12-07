@@ -44,6 +44,6 @@ def merge_gpu_info(df):
     if gpu_df is None:
         return df
     out_df = pd.merge(df, gpu_df, on='PID', how='left')
-    out_df['GPU Memory'] = out_df['GPU Memory'].fillna(0)
+    out_df['GPU Memory (%)'] = out_df['GPU Memory (%)'].fillna(0)
     out_df['GPU ID'] = out_df['GPU ID'].fillna('CPU')
     return out_df
