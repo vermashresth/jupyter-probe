@@ -29,7 +29,7 @@ def get_sessions_dataframe(domain, port, password=None, token=None):
     df = df.set_index('Kernel_ID')
     df.index.name = 'Kernel ID'
     df['PID'] = df.apply(lambda row: get_process_id(row.name), axis=1)
-    df['CPU Memory'] = df["PID"].apply(memory_usage_psutil)
+    df['CPU Memory (%)'] = df["PID"].apply(memory_usage_psutil)
     return df
 
 def get_running_sessions(domain, port, password=None, token=None):

@@ -35,7 +35,7 @@ def get_summary_panel(cpu_mem_pct, gpu_mem_pct, bar_size=30, expand=True, v_pad=
 def get_usage_table(df, top_n, expand=True):
     box_style = box.SQUARE
     notebook_style = 'color(255) on magenta'
-    show_cols = ['Name', 'PID', 'CPU Memory', 'GPU Memory', 'State']
+    show_cols = ['Name', 'PID', 'CPU Memory (%)', 'GPU Memory (%)', 'State']
     show_cols = [col for col in show_cols if col in df.columns]
     table = Table(show_header=True, box=box_style, expand=expand)
     table.add_column("Notebook", header_style=notebook_style, overflow='fold')

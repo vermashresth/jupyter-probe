@@ -1,9 +1,9 @@
-import pynvml
 import pandas as pd
 import re
 
 def get_gpu_processes(pid_mapping={}):
     try:
+        import pynvml
         pynvml.nvmlInit()
     except Exception as e:
         print('WARN: GPU not supported on your system')
@@ -24,7 +24,8 @@ def get_gpu_processes(pid_mapping={}):
                 else:
                     pids.append(pid_mapping[proc.pid])
 
-    return pd.DataFrame({'PID': pids, 'GPU Memory': memory_pcts, 'GPU ID': gpu_ids})
+    return pd.DataFrame({'PID': pids, 'GPU Memory (%)': memory_pcts, 'GPU ID': gpu_ids})
+
 
 def global_to_local_pid_mapping(local_pids):
     mapping = {}
@@ -40,7 +41,7 @@ def global_to_local_pid_mapping(local_pids):
 def merge_gpu_info(df):
     mapping = global_to_local_pid_mapping(df['PID'].values)
     gpu_df = get_gpu_processes(pid_mapping=mapping)
-    if not gpu_df:
+    if gpu_df is None:
         return df
     out_df = pd.merge(df, gpu_df, on='PID', how='left')
     out_df['GPU Memory'] = out_df['GPU Memory'].fillna(0)
