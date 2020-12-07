@@ -20,14 +20,14 @@ def get_summary_panel(info_dict, bar_size=30, expand=True, v_pad=1, h_pad=2):
         mem_pct = info_dict[device]['percent']
         m = int(mem_pct*bar_size/100.)
         s = bar_size-m
-        if 'gpu' not in device:
-            style = '[color(255) on bright_red]'
-        else:
+        if device.startswith('gpu'):
             style = '[color(255) on bright_green]'
+        else:
+            style = '[color(255) on bright_red]'
         used_mem = info_dict[device]['used']
         total_mem = info_dict[device]['total']
         t = '{} Memory: {} {} {}'.format(device, style, ' '*m, end(style))
-        t +='{} {}%   Used: {}G   Total: {}G\n'.format(' '*s, mem_pct, used_mem, total_mem)
+        t +='{} {}%     Used: {}G   Total: {}G\n'.format(' '*s, mem_pct, used_mem, total_mem)
 
         all_text +=t
 

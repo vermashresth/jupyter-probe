@@ -27,11 +27,11 @@ def get_memory_info_gpu_cpu():
     try:
         import pynvml
         pynvml.nvmlInit()
-        handle = pynvml.nvmlDeviceGetHandleByIndex(gpu_id)
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
         gpu = pynvml.nvmlDeviceGetMemoryInfo(handle)
         gpu_total = round(gpu.total/2**30,1)
         gpu_used = round(gpu.used/2**30,1)
-        gpu_percent = round(gpu_used/gpu_total, 1)
+        gpu_percent = round(gpu_used/gpu_total, 3)*100
         res['GPU'] = {'total':gpu_total, 'used':gpu_used, 'percent':gpu_percent}
     except:
         pass
