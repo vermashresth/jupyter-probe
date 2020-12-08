@@ -5,7 +5,7 @@ import psutil
 import requests
 
 from jupyterprobe.memory_utils import memory_usage_psutil
-
+from jupyterprobe.register_utils import get_current_jpy_server_details, get_notebook_abs_path
 
 def get_sessions_dataframe(domain, port, password=None, token=None):
     """Show table with info about running jupyter notebooks.
@@ -21,19 +21,22 @@ def get_sessions_dataframe(domain, port, password=None, token=None):
             * pid: pid of the notebook process.
             * memory: notebook memory consumption in percentage.
     """
-    res = get_running_sessions(domain, port, password=password, token=token)
+    server = get_current_jpy_server_details()
+    res = get_running_sessions(domain, port, password=password, token=server['token'])
     if 'message' in res:
         if res['message'] == 'Forbidden':
             print('ERROR: Token or password wrong. Please recheck')
             return None
     res = process_sessions_info(res)
     sessions = [{'Kernel_ID': session['kernel']['id'],
-                  'Path': session['path'],
+                  'Relative Path': session['path'],
                   'Name': session['name'],
                   'State': session['kernel']['execution_state']} for session in res]
     df = pd.DataFrame(sessions)
     df = df.set_index('Kernel_ID')
     df.index.name = 'Kernel ID'
+
+    df['Path'] = df.apply(lambda row: get_notebook_abs_path(server, row['Relative Path']), axis=1)
     df['PID'] = df.apply(lambda row: get_process_id(row.name), axis=1)
     df['CPU Memory (%)'] = df["PID"].apply(memory_usage_psutil)
     return df
