@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: jupyter-probe
-Version: 0.0.16
+Version: 0.0.23
 Summary: A package to monitor, manage, declare and analyse notebook resource usage on jupyter environments
 Home-page: https://github.com/vermashresth/jupyter-probe
 Author: Shresth Verma

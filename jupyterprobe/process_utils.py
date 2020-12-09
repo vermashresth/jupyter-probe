@@ -1,11 +1,12 @@
+from jupyterprobe.memory_utils import memory_usage_psutil
+from jupyterprobe.register_utils import get_current_jpy_server_details, get_notebook_abs_path
+
 import os
 import subprocess
 import pandas as pd
 import psutil
 import requests
 
-from jupyterprobe.memory_utils import memory_usage_psutil
-from jupyterprobe.register_utils import get_current_jpy_server_details, get_notebook_abs_path
 
 def get_sessions_dataframe(domain, port, password=None, token=None):
     """Show table with info about running jupyter notebooks.
@@ -39,6 +40,7 @@ def get_sessions_dataframe(domain, port, password=None, token=None):
     df['Path'] = df.apply(lambda row: get_notebook_abs_path(server, row['Relative Path']), axis=1)
     df['PID'] = df.apply(lambda row: get_process_id(row.name), axis=1)
     df['CPU Memory (%)'] = df["PID"].apply(memory_usage_psutil)
+
     return df
 
 def get_running_sessions(domain, port, password=None, token=None):

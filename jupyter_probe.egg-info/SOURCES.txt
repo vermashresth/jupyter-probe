@@ -10,4 +10,5 @@ jupyterprobe/jupyterprobe.py
 jupyterprobe/memory_utils.py
 jupyterprobe/plainUI.py
 jupyterprobe/process_utils.py
+jupyterprobe/register_utils.py
 jupyterprobe/richUI.py

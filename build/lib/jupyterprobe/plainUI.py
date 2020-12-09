@@ -18,7 +18,9 @@ def get_summary_panel(info_dict, bar_size=30, expand=True, v_pad=1, h_pad=2):
 
 
 def get_usage_table(df, top_n, expand=True):
-    return df.reset_index().iloc[:, 1:].round(2)
+    out =  df.reset_index().iloc[:, 1:].round(2)
+    out['CPU Memory (%)'] = out['CPU Memory (%)'].apply(lambda x: str(x)+'%')
+    return out
 
 def console_print(printables):
     for printable in printables:
