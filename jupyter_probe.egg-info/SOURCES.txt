@@ -5,6 +5,7 @@ jupyter_probe.egg-info/SOURCES.txt
 jupyter_probe.egg-info/dependency_links.txt
 jupyter_probe.egg-info/top_level.txt
 jupyterprobe/__init__.py
+jupyterprobe/config.py
 jupyterprobe/gpu_utils.py
 jupyterprobe/jupyterprobe.py
 jupyterprobe/memory_utils.py

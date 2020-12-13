@@ -25,7 +25,7 @@ def get_memory_info_gpu_cpu():
     cpu_percent = cpu[2]
     res['CPU'] = {'total':cpu_total, 'used':cpu_used, 'percent':cpu_percent}
     try:
-        import pynvml
+        import py3nvml.py3nvml as pynvml
         pynvml.nvmlInit()
         handle = pynvml.nvmlDeviceGetHandleByIndex(0)
         gpu = pynvml.nvmlDeviceGetMemoryInfo(handle)

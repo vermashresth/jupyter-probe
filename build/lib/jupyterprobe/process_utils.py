@@ -8,7 +8,7 @@ import psutil
 import requests
 
 
-def get_sessions_dataframe(domain, port, password=None, token=None):
+def get_sessions_dataframe(domain, port, password=None):
     """Show table with info about running jupyter notebooks.
 
     Args:
@@ -23,10 +23,13 @@ def get_sessions_dataframe(domain, port, password=None, token=None):
             * memory: notebook memory consumption in percentage.
     """
     server = get_current_jpy_server_details()
+    if server['password'] and password is None:
+        print('Your jupyter host is configured to authenticate from password but you have not provided it.')
+        raise
     res = get_running_sessions(domain, port, password=password, token=server['token'])
     if 'message' in res:
         if res['message'] == 'Forbidden':
-            print('ERROR: Token or password wrong. Please recheck')
+            print('ERROR: Failed to authenticate. Token or password wrong. Please recheck')
             return None
     res = process_sessions_info(res)
     sessions = [{'Kernel_ID': session['kernel']['id'],
@@ -49,7 +52,11 @@ def get_running_sessions(domain, port, password=None, token=None):
     if password and token :
         raise Exception('Only one of password and token can be given')
     elif password:
-        s.get(base_url)
+        try:
+            s.get(base_url)
+        except:
+            print('Jupyter host and/or port are wrong. Please recheck.')
+            raise
         data = {'password':password}
         data.update(s.cookies)
         s.post(base_url+"/login", data=data)
@@ -60,7 +67,11 @@ def get_running_sessions(domain, port, password=None, token=None):
         }
     else:
         headers = {}
-    res = s.get(base_url + "/api/sessions", headers=headers).json()
+    try:
+        res = s.get(base_url + "/api/sessions", headers=headers).json()
+    except:
+        print('Jupyter host and/or port are wrong. Please recheck.')
+        raise
     return res
 
 

@@ -4,7 +4,13 @@ import json
 import pandas as pd
 
 def get_current_jpy_server_details():
-    servers = list(notebookapp.list_running_servers())
+    try:
+        servers = list(notebookapp.list_running_servers())
+    except:
+        print('Could not connect to jupyter server from your kernel. Make sure you have Jupyter library installed for your current python kernel.')
+        print('Try `pip uninstall -y jupyter jupyterlab && pip install jupyter jupyterlab` for your current python kernel')
+        raise
+
     jpy_parent_pid = os.environ['JPY_PARENT_PID']
     for server in servers:
         if server['pid'] == int(jpy_parent_pid):
@@ -23,19 +29,16 @@ def register_experiment(notebook_id, owner, priority, project):
 
     dic, json_file, json_file_path = read_register_file()
 
-    if id not in dic:
-        dic[id] = {}
-
     notebook_name = notebook_id.split('/')[-1]
-    if notebook_id in dic[id]:
+    if notebook_id in dic:
         print('WARN: Found existing declaration for the current notebook')
         print('Owner: {}, Priority: {}, Project: {}'.format(
-                                                            dic[id][notebook_id]['owner'],
-                                                            dic[id][notebook_id]['priority'],
-                                                            dic[id][notebook_id]['project']
+                                                            dic[notebook_id]['owner'],
+                                                            dic[notebook_id]['priority'],
+                                                            dic[notebook_id]['project']
         ))
         print('WARN: Declaration will be overwritten!')
-    dic[id][notebook_id] = {'name': notebook_name, 'owner':owner, 'priority':priority, 'project':project}
+    dic[notebook_id] = {'name': notebook_name, 'owner':owner, 'priority':priority, 'project':project}
 
     json_file = open(json_file_path, 'w+')
     json_file.write(json.dumps(dic))
@@ -68,21 +71,19 @@ def get_json_register_file():
     return f, register_file_path
 
 def populate_team_in_results(results):
-    register_dict, _, _ = read_register_file()
+    experiment_dict, _, _ = read_register_file()
     server = get_current_jpy_server_details()
     id = get_unique_jpy_identfier(server)
     values = []
-    if id in register_dict:
-        registered_experiments = register_dict[id]
-        for experiment in registered_experiments:
-            experiment_details = registered_experiments[experiment]
+    for experiment in experiment_dict:
+        experiment_details = experiment_dict[experiment]
 
-            name = experiment_details['name']
-            owner = experiment_details['owner']
-            priority =  experiment_details['priority']
-            project =  experiment_details['project']
+        name = experiment_details['name']
+        owner = experiment_details['owner']
+        priority =  experiment_details['priority']
+        project =  experiment_details['project']
 
-            values.append([experiment, name, owner, priority, project])
+        values.append([experiment, name, owner, priority, project])
 
     df_team = pd.DataFrame(values, columns = ['Path', 'Name', 'Owner', 'Priority', 'Project'])
     out_df = pd.merge(results, df_team , how='left')
