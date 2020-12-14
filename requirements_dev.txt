@@ -8,3 +8,4 @@ py3nvml
 rich
 jupyter
 jupyterlab
+filelock

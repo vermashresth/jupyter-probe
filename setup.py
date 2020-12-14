@@ -7,7 +7,7 @@ requirements = []
 
 setup(
     name="jupyter-probe",
-    version="0.0.32",
+    version="0.1.1",
     author="Shresth Verma",
     author_email="vermashresth@gmail.com",
     description="A package to monitor, manage, declare and analyse notebook resource usage on jupyter environments",
@@ -15,14 +15,15 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/vermashresth/jupyter-probe",
     packages=find_packages(),
-    # install_requires=[
-    # 'pandas',
-    # 'psutil',
-    # 'requests',
-    # 'py3nvml',
-    # 'rich',
-    # 'jupyter',
-    # 'jupyterlab'],
+    install_requires=[
+    'pandas',
+    'psutil',
+    'requests',
+    'py3nvml',
+    'rich',
+    'jupyter',
+    'jupyterlab',
+    'filelock'],
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",

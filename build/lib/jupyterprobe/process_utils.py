@@ -23,9 +23,11 @@ def get_sessions_dataframe(domain, port, password=None):
             * memory: notebook memory consumption in percentage.
     """
     server = get_current_jpy_server_details()
+    if not server['password']  and password is not None:
+        print('WARN: Your jupyter host does not need password to authenticate. Ignoring password.\n')
+        password = None
     if server['password'] and password is None:
-        print('Your jupyter host is configured to authenticate from password but you have not provided it.')
-        raise
+        raise Exception('Your jupyter host is configured to authenticate from password but you have not provided it.')
     res = get_running_sessions(domain, port, password=password, token=server['token'])
     if 'message' in res:
         if res['message'] == 'Forbidden':
@@ -55,8 +57,7 @@ def get_running_sessions(domain, port, password=None, token=None):
         try:
             s.get(base_url)
         except:
-            print('Jupyter host and/or port are wrong. Please recheck.')
-            raise
+            raise Exception('Jupyter host and/or port are wrong. Please recheck.')
         data = {'password':password}
         data.update(s.cookies)
         s.post(base_url+"/login", data=data)
@@ -70,8 +71,7 @@ def get_running_sessions(domain, port, password=None, token=None):
     try:
         res = s.get(base_url + "/api/sessions", headers=headers).json()
     except:
-        print('Jupyter host and/or port are wrong. Please recheck.')
-        raise
+        raise Exception('Jupyter host and/or port are wrong. Please recheck.')
     return res
 
 

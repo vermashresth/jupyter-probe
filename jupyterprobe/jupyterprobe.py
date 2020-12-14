@@ -74,14 +74,14 @@ class Probe:
             return output
 
     def get_path_by_PID(self, pid):
-        output = self.get_info_by_PID(pid)
+        output = self.get_results_by_PID(pid)
         if output is None:
             return None
         else:
             return output['Path'].iloc[0]
 
     def get_path_by_name(self, name):
-        output = self.get_info_by_name(name)
+        output = self.get_results_by_name(name)
         if len(output)==1:
             return output['Path'].iloc[0]
         else:

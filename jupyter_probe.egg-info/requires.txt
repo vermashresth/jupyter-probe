@@ -1,0 +1,8 @@
+pandas
+psutil
+requests
+py3nvml
+rich
+jupyter
+jupyterlab
+filelock

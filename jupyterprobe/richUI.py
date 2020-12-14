@@ -49,7 +49,7 @@ def current_nb_summary(results, pid):
         text += '\nOwner: {},  '.format(info['Owner'].iloc[0])
         decalared=True
     if info['Priority'].iloc[0] != '-':
-        text += 'Priority: {},  '.format(info['Priority'].iloc[0])
+        text += 'Priority: {},  '.format(int(info['Priority'].iloc[0]))
         declared=True
     if info['Project'].iloc[0] != '-':
         text += 'Project: {} '.format(info['Project'].iloc[0])

@@ -3,6 +3,7 @@ setup.py
 jupyter_probe.egg-info/PKG-INFO
 jupyter_probe.egg-info/SOURCES.txt
 jupyter_probe.egg-info/dependency_links.txt
+jupyter_probe.egg-info/requires.txt
 jupyter_probe.egg-info/top_level.txt
 jupyterprobe/__init__.py
 jupyterprobe/config.py

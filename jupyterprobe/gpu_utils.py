@@ -2,12 +2,7 @@ import pandas as pd
 import re
 
 def get_gpu_processes(pid_mapping={}):
-    try:
-        import py3nvml.py3nvml as pynvml
-        pynvml.nvmlInit()
-    except Exception as e:
-        print('INFO: GPU not found on system\n')
-        return None
+
         # return pd.DataFrame({'PID': [], 'GPU Memory': [], 'GPU ID': []})
     pids = []
     memory_pcts = []
@@ -39,10 +34,14 @@ def global_to_local_pid_mapping(local_pids):
 
 
 def merge_gpu_info(df):
+    try:
+        import py3nvml.py3nvml as pynvml
+        pynvml.nvmlInit()
+    except:
+        print('INFO: GPU not found on system\n')
+        return df
     mapping = global_to_local_pid_mapping(df['PID'].values)
     gpu_df = get_gpu_processes(pid_mapping=mapping)
-    if gpu_df is None:
-        return df
     out_df = pd.merge(df, gpu_df, on='PID', how='left')
     out_df['GPU Memory (%)'] = out_df['GPU Memory (%)'].fillna(0)
     out_df['GPU ID'] = out_df['GPU ID'].fillna('CPU')

@@ -2,14 +2,14 @@ from notebook import notebookapp
 import os
 import json
 import pandas as pd
+from filelock import Timeout, FileLock
 
 def get_current_jpy_server_details():
     try:
         servers = list(notebookapp.list_running_servers())
     except:
-        print('Could not connect to jupyter server from your kernel. Make sure you have Jupyter library installed for your current python kernel.')
-        print('Try `pip uninstall -y jupyter jupyterlab && pip install jupyter jupyterlab` for your current python kernel')
-        raise
+        raise Exception('Could not connect to jupyter server from your kernel. Make sure you have Jupyter library installed for your current python kernel. \
+        Try `pip uninstall -y jupyter jupyterlab && pip install jupyter jupyterlab` for your current python kernel')
 
     jpy_parent_pid = os.environ['JPY_PARENT_PID']
     for server in servers:
@@ -38,11 +38,18 @@ def register_experiment(notebook_id, owner, priority, project):
                                                             dic[notebook_id]['project']
         ))
         print('WARN: Declaration will be overwritten!')
+    if not (isinstance(priority, int) or isinstance(priority, float)):
+        raise ValueError('Priority argument must be an integer or float')
+
     dic[notebook_id] = {'name': notebook_name, 'owner':owner, 'priority':priority, 'project':project}
 
-    json_file = open(json_file_path, 'w+')
-    json_file.write(json.dumps(dic))
-    json_file.close()
+    lock = FileLock(json_file_path+'.lock')
+    try:
+        with lock.acquire(timeout=10):
+            json_file = open(json_file_path, 'w+')
+            json_file.write(json.dumps(dic))
+    except Timeout:
+        print("Another user is simultaneously declaring experiment. Please try declaring again.")
 
     return dic
 
@@ -62,10 +69,15 @@ def get_json_register_file():
         directory = os.path.dirname(register_file_path)
         if not os.path.exists(directory):
             os.makedirs(directory)
-        f = open(register_file_path, 'w+')
-        init_dict = {}
-        f.write(json.dumps(init_dict))
-        f.close()
+        lock = FileLock(register_file_path+'.lock')
+        try:
+            with lock.acquire(timeout=10):
+                f = open(register_file_path, 'w+')
+                init_dict = {}
+                f.write(json.dumps(init_dict))
+        except Timeout:
+            print("Another user is simultaneously creating initial experiment register. Please try running your operation again.")
+
 
     f = open(register_file_path, 'r')
     return f, register_file_path
