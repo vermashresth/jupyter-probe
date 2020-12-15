@@ -1,3 +1,4 @@
 *.ipynb
 jupyterprobe/__pycache__
 test.py
+*.fuse*
