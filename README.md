@@ -43,6 +43,7 @@ To monitor resource usage of all notebooks in your session, call `Monitor`.
 ```python
 pb.Monitor()
 ```
+![Monitor](https://github.com/vermashresth/jupyter-probe/raw/master/img/monitorcell.png)
 Top 5 results are shown sorted by memory usage. To see more, you can pass top_n as argument
 
 ```python
@@ -61,6 +62,7 @@ By default, monitor only shows resource usage and PID of your notebooks. To see 
 ```python
 pb.MonitorTeam()
 ```
+![Team](https://github.com/vermashresth/jupyter-probe/raw/master/img/teamcell.png)
 This will show details based on your declarations as well as declarations from other teammates using the same Jupyter Session.
 
 #### Custom Usage Analytics
