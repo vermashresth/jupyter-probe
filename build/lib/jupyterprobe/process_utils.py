@@ -9,19 +9,6 @@ import requests
 
 
 def get_sessions_dataframe(domain, port, password=None):
-    """Show table with info about running jupyter notebooks.
-
-    Args:
-        host: host of the jupyter server.
-        port: port of the jupyter server.
-
-    Returns:
-        DataFrame with rows corresponding to running notebooks and following columns:
-            * index: notebook kernel id.
-            * path: path to notebook file.
-            * pid: pid of the notebook process.
-            * memory: notebook memory consumption in percentage.
-    """
     server = get_current_jpy_server_details()
     if not server['password']  and password is not None:
         print('WARN: Your jupyter host does not need password to authenticate. Ignoring password.\n')
@@ -98,16 +85,6 @@ def get_top_parent(pids):
 
 
 def get_process_id(name):
-    """Return process ids found by (partial) name or regex.
-
-    Source: https://stackoverflow.com/a/44712205/304209.
-    >>> get_process_id('kthreadd')
-    [2]
-    >>> get_process_id('watchdog')
-    [10, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61]  # ymmv
-    >>> get_process_id('non-existent process')
-    []
-    """
     # child = subprocess.Popen(['pgrep', '-f', name], stdout=subprocess.PIPE, shell=False)
     # response = child.communicate()[0]
     # all_pids =  [int(pid) for pid in response.split()]

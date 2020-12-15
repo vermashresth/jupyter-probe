@@ -7,7 +7,7 @@ requirements = []
 
 setup(
     name="jupyter-probe",
-    version="0.1.1",
+    version="0.1.2",
     author="Shresth Verma",
     author_email="vermashresth@gmail.com",
     description="A package to monitor, manage, declare and analyse notebook resource usage on jupyter environments",

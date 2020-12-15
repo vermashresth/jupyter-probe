@@ -2,16 +2,6 @@ import os
 import psutil
 
 def memory_usage_psutil(pid=None):
-    """Get memory usage percentage by current process or by process specified by id, like in top.
-
-    Source: https://stackoverflow.com/a/30014612/304209.
-
-    Args:
-        pid: pid of the process to analyze. If None, analyze the current process.
-
-    Returns:
-        memory usage of the process, in percentage like in top, values in [0, 100].
-    """
     if pid is None:
         pid = os.getpid()
     process = psutil.Process(pid)
