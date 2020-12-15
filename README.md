@@ -112,3 +112,8 @@ python3.x -m ipykernel install --user
 ## Issues and Contributing
 The project is still in active development. If you face any error or want to request a feature, feel free to open an issue. Additionally, if you want to contribute, a PR is always welcome.
 
+## The `nvidia-smi` conundrum
+`nvidia-smi` is a great command to check GPU usage and state for your system. However, if the system you are using is in a container, when you run `nvidia-smi`, you will see correct GPU memory usage but process IDs and names might not come up. This can happen because `nvidia-smi` uses hardware level `nvml` library which exposes PIDs as defined on host system. But PIDs change on container and thus process names can't be found. As a result, `nvidia-smi` doesn't yield process level information. 
+
+Jupyterprobe solves this issue by mapping back from host PIDs to container PIDs. However, currently, this only works on Unix based systems (which have process information in /proc). 
+
