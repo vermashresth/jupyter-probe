@@ -68,15 +68,15 @@ This will show details based on your declarations as well as declarations from o
 #### Custom Usage Analytics
 If you want to do your own analytics on notebooks' usage, you can get Pandas Dataframe of all the results through `pb.results`.
 
-Some more usefull methods:
+Some more usefull methods that can be called upon Probe `object`:
 
-`get_results_by_PID` : get all results of a notebook through PID
+`get_results_by_PID(PID)` : get all results of notebook matching given PID
 
-`get_results_by_name` : get all results of a notebook through name. Returns multiple notebooks if name isn't unique
+`get_results_by_name(name)` : get all results of notebook matching given name. Returns multiple notebooks if name isn't unique
 
-`get_path_by_PID` : get absolute path of notebook through PID
+`get_path_by_PID(PID)` : get absolute path of notebook matching given PID
 
-`get_path_by_name` : get absolute path of notebook through name. Returns multiple paths if name isn't unique
+`get_path_by_name(name)` : get absolute path of notebook matching given name. Returns multiple paths if name isn't unique
 
 ## Troubleshooting
 
