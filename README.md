@@ -109,6 +109,14 @@ python3.x -m pip install ipykernel
 python3.x -m ipykernel install --user
 ```
 
+Additionally, to check if your kernel can find notebook servers, run
+```python
+from notebook import notebookapp
+servers = list(notebookapp.list_running_servers())
+print(servers)
+```
+If your kernel is correctly setup, you should see jupyter server information. If you get an error, or an empty list, try above steps.
+
 ## Issues and Contributing
 The project is still in active development. If you face any error or want to request a feature, feel free to open an issue. Additionally, if you want to contribute, a PR is always welcome.
 
